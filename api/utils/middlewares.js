@@ -39,15 +39,13 @@ const encryptUserPW = (req, res, next) => {
 
 const compareUserPW = (req, res, next) => {
   const { username, password } = req.body;
-  // https://github.com/kelektiv/node.bcrypt.js#usage
-  // TODO: Fill this middleware in with the Proper password comparing, bcrypt.compare()
   if (username && password) {
     User.findOne({ username })
       .then(user => {
         bcrypt
           .compare(password, user.password)
           .then(response => {
-            if (response === true) {
+            if (response) {
               req.username = user.username;
               next();
             } else {
